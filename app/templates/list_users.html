@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>User List</h1>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- User rows will be appended here by JavaScript -->
+            </tbody>
+        </table>
+        <a href="/" class="btn btn-secondary mt-3">Back</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '/users',
+                method: 'GET',
+                success: function(response) {
+                    const users = response.users;
+                    let rows = '';
+                    users.forEach(user => {
+                        rows += `
+                            <tr>
+                                <td>${user.id}</td>
+                                <td>${user.username}</td>
+                                <td>${user.email}</td>
+                            </tr>
+                        `;
+                    });
+                    $('#userTableBody').html(rows);
+                },
+                error: function() {
+                    alert('Failed to fetch users');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
